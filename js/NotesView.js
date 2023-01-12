@@ -36,6 +36,67 @@ export default class NotesView {
             });
         });
 
-        // TODO: hide the note preview by default
+        // console.log(this._createNoteListItemHTML(300, "Test", "Test Body", new Date()));
+
+        this.updateNotesPreviewVisibility(false);
+    }
+
+    _createNoteListItemHTML(id, title, body, updated) {
+        const MAX_BODY_LENGTH = 60;
+
+        return `
+            <div class="notes__list-item" data-note-id= ${id}>
+                <div class="notes__small-title">${title}</div>
+                <div class="notes__small-body">
+                    ${body.substring(0, MAX_BODY_LENGTH)}
+                    ${body.length > MAX_BODY_LENGTH ? "..." : ""}
+                </div>
+                <div class="notes__small-updated">
+                    ${updated.toLocaleString(undefined, { dateStyle: "full", timeStyle: "short" })}
+                </div>
+            </div>
+        `;
+    }
+
+    updateNoteListHTML(notes) {
+        const noteListContainer = this.root.querySelector(".notes__list");
+
+        noteListContainer.innerHTML = "";
+
+        for (const note of notes) {
+            const html = this._createNoteListItemHTML(note.id, note.title, note.body, new Date(note.updated));
+
+            noteListContainer.insertAdjacentHTML("beforeend", html);
+        }
+
+        // Add the select/delete events for each note items
+        noteListContainer.querySelectorAll(".notes__list-item").forEach(noteListItem => {
+            noteListItem.addEventListener("click", () => {
+                this.onNoteSelect(noteListItem.dataset.noteId);
+            });
+
+            noteListItem.addEventListener("dblclick", () => {
+                const doDelete = confirm("Are you sure you wanna delete the note?");
+
+                if(doDelete) {
+                    this.onNoteDelete(noteListItem.dataset.noteId);
+                } 
+            });
+        });
+    }
+
+    updateActiveNote(selectedNote) {
+        this.root.querySelector(".notes__title").value = selectedNote.title;
+        this.root.querySelector(".notes__body").value = selectedNote.body;
+
+        this.root.querySelectorAll("notes__list-item").forEach(noteListItem => {
+            noteListItem.classList.remove("notes__list-item--selected");
+        });
+
+        this.root.querySelector(`.notes__list-item[data-note-id="${selectedNote.id}"]`).classList.add("notes__list-item--selected");
+    }
+
+    updateNotesPreviewVisibility(visible) {
+        this.root.querySelector(".notes__preview").style.visibility = visible ? "visible": "hidden";
     }
 } 

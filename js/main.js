@@ -1,13 +1,4 @@
-import NotesView from './NotesView.js'
+import App from "./App.js";
 
-const app = document.getElementById('app');
-const view = new NotesView(app, {
-    
-    onNoteAdd() {
-        console.log("Let add a new note");
-    },
-    onNotesEdit(updatedNoteTitle, updateNoteBody) {
-        console.log(updatedNoteTitle);
-        console.log(updateNoteBody);
-    }
-})
+const root = document.getElementById('app');
+const app = new App(root);
