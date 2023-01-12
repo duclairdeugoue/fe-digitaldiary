@@ -35,9 +35,7 @@ export default class NotesView {
                 this.onNotesEdit(updatedNoteTitle, updateNoteBody);
             });
         });
-
-        // console.log(this._createNoteListItemHTML(300, "Test", "Test Body", new Date()));
-
+ 
         this.updateNotesPreviewVisibility(false);
     }
 
@@ -89,7 +87,7 @@ export default class NotesView {
         this.root.querySelector(".notes__title").value = selectedNote.title;
         this.root.querySelector(".notes__body").value = selectedNote.body;
 
-        this.root.querySelectorAll("notes__list-item").forEach(noteListItem => {
+        this.root.querySelectorAll(".notes__list-item").forEach(noteListItem => {
             noteListItem.classList.remove("notes__list-item--selected");
         });
 
