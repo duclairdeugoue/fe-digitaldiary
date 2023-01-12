@@ -14,7 +14,7 @@ export default class NotesAPI {
 
     static saveNote(newNote) {
         const notes = NotesAPI.getAllNotes();
-        const existingNote = notes.find(note => note.id == newNote.id);
+        const existingNote = notes.find(note => note.id === newNote.id);
 
         if (existingNote) {
             existingNote.title = newNote.title;
